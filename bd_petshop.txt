@@ -1,0 +1,47 @@
+CREATE SCHEMA `petshop` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE `petshop`.`vendedor` (
+  `cod_vendedor` INT NOT NULL,
+  `nombres` VARCHAR(45) NOT NULL,
+  `apellidos` VARCHAR(45) NOT NULL,
+  `dni` CHAR(9) NOT NULL,
+  `celular` CHAR(9) NOT NULL,
+  `direccion` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`cod_vendedor`),
+  UNIQUE INDEX `dni_UNIQUE` (`dni` ASC) VISIBLE);
+
+CREATE TABLE `petshop`.`cliente` (
+  `idcliente` INT NOT NULL AUTO_INCREMENT,
+  `dni_cli` CHAR(9) NOT NULL,
+  `nombre_cli` VARCHAR(45) NOT NULL,
+  `apellido_cli` VARCHAR(45) NOT NULL,
+  `celular_cli` VARCHAR(45) NOT NULL,
+  `direccion_cli` VARCHAR(45) NULL,
+  PRIMARY KEY (`idcliente`),
+  UNIQUE INDEX `dni_cli_UNIQUE` (`dni_cli` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+
+CREATE TABLE `petshop`.`venta` (
+  `id_venta` INT NOT NULL AUTO_INCREMENT,
+  `fecha` DATE NOT NULL,
+  `cod_vendedor` INT NOT NULL,
+  `total` DECIMAL(12) NOT NULL,
+  `idcliente` INT NOT NULL,
+  PRIMARY KEY (`id_venta`),
+  INDEX `fk_venta_cli_idx` (`cod_vendedor` ASC) VISIBLE,
+  INDEX `fk_venta_cli_idx1` (`idcliente` ASC) VISIBLE,
+  CONSTRAINT `fk_venta_ven`
+    FOREIGN KEY (`cod_vendedor`)
+    REFERENCES `petshop`.`vendedor` (`cod_vendedor`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_venta_cli`
+    FOREIGN KEY (`idcliente`)
+    REFERENCES `petshop`.`cliente` (`idcliente`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
